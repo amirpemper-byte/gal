@@ -146,7 +146,6 @@
             width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
         }
         .celeb-card:hover .celeb-img { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: var(--text-dark); }
-        .celeb-card h3 { font-size: 1.4rem; font-weight: 400; margin-top: 10px; }
 
         /* קלפי יתרונות */
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-top: 60px; }
@@ -158,6 +157,43 @@
         .clean-card .num { font-family: 'Arial', sans-serif; font-size: 4rem; color: var(--bg-nude); position: absolute; top: 10px; left: 20px; font-weight: bold; z-index: 0; }
         .clean-card h3, .clean-card p { position: relative; z-index: 1; }
         .clean-card h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 600; }
+        
+        /* --- בלוק ביקורות אודיו --- */
+        .audio-reviews {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 600px;
+            margin: 40px auto 0;
+        }
+        .audio-player {
+            background: var(--bg-pure);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+        }
+        .audio-player:hover {
+            border-color: var(--text-dark);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .audio-icon {
+            color: var(--text-dark);
+            width: 24px;
+            height: 24px;
+        }
+        audio {
+            width: 100%;
+            height: 35px;
+            outline: none;
+        }
+        audio::-webkit-media-controls-panel {
+            background-color: var(--bg-pure);
+        }
         
         .divider { width: 1px; height: 80px; background: var(--border-color); margin: 0 auto; }
 
@@ -226,7 +262,7 @@
     <div class="section-nude">
         <div class="inner grid-2 reveal-up">
             <div>
-                <h2>נעים מאוד, אני עידית עדן.</h2>
+                <h2>נעים מאוד, אני גל.</h2>
                 <p>מגיל קטן תמיד ידעתי שאני רוצה לבנות לעצמי משהו משלי. עוד לפני שהבנתי בכלל מה זה עסק, כבר ניסיתי למכור, ליצור ולהרגיש עצמאית בדרך שלי.</p>
                 <p>לפני יותר מ־4 שנים פתחתי את העסק שלי, כשהכל התחיל מבלונים, סטנדים ועיצובי חדרים. עם השנים העסק גדל איתי והיום אני אחרי מעל 500 אירועים, עמדות צילום ועיצובים מכל הסוגים, עם לקוחות מכל הארץ והמון ניסיון אמיתי מהשטח.</p>
                 <p>פגשתי בדרך המון אנשים, עברתי תהליך מטורף של למידה, טעויות, הצלחות ועבודה קשה — והבנתי שעולם האירועים הוא הרבה מעבר לעיצוב יפה. זה עולם יצירתי, חווייתי ובעיקר תחום שיכול להיות מאוד רווחי כשעובדים נכון.</p>
@@ -236,7 +272,7 @@
                 <p>כדי ללמד עוד נשים איך להיכנס לעולם הזה בצורה מקצועית, איך להפוך יצירתיות להכנסה אמיתית, ואיך להתחיל לבנות לעצמן דרך עצמאית עם ביטחון.</p>
             </div>
             <div class="clean-image-box">
-                <img src="גל אחד.jpeg" alt="עידית עדן">
+                <img src="גל אחד.jpeg" alt="גל">
             </div>
         </div>
     </div>
@@ -284,20 +320,16 @@
             
             <div class="celeb-grid">
                 <div class="celeb-card">
-                    <div class="celeb-img"><img src="גל מפורסם אחד.jpeg" alt="מפורסם 1"></div>
-                    <h3>מפורסם 1</h3>
+                    <div class="celeb-img"><img src="גל מפורסם אחד.jpeg" alt="מפורסם"></div>
                 </div>
                 <div class="celeb-card">
-                    <div class="celeb-img"><img src="גל מפורסם 2.jpeg" alt="מפורסם 2"></div>
-                    <h3>מפורסם 2</h3>
+                    <div class="celeb-img"><img src="גל מפורסם 2.jpeg" alt="מפורסם"></div>
                 </div>
                 <div class="celeb-card">
-                    <div class="celeb-img"><img src="גל מפורסם 3.jpeg" alt="מפורסם 3"></div>
-                    <h3>מפורסם 3</h3>
+                    <div class="celeb-img"><img src="גל מפורסם 3.jpeg" alt="מפורסם"></div>
                 </div>
                 <div class="celeb-card">
-                    <div class="celeb-img"><img src="גל מפורסם 4.jpeg" alt="מפורסם 4"></div>
-                    <h3>מפורסם 4</h3>
+                    <div class="celeb-img"><img src="גל מפורסם 4.jpeg" alt="מפורסם"></div>
                 </div>
             </div>
         </div>
@@ -319,6 +351,55 @@
 
     <div class="section-nude" style="text-align: center; padding: 100px 5%;">
         <div class="inner reveal-up" style="padding: 0;">
+            <h2 style="font-size: 3rem;">מה אומרות בוגרות הקורס?</h2>
+            <p style="font-size: 1.2rem; color: var(--text-light);">תקשיבי בעצמך למה שיש להן להגיד.</p>
+            
+            <div class="audio-reviews">
+                <div class="audio-player">
+                    <svg class="audio-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                    <audio controls controlsList="nodownload">
+                        <source src="WhatsApp Audio 2026-05-19 at 22.28.24.ogg" type="audio/ogg">
+                        הדפדפן שלך אינו תומך בהשמעת קול.
+                    </audio>
+                </div>
+                
+                <div class="audio-player">
+                    <svg class="audio-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                    <audio controls controlsList="nodownload">
+                        <source src="WhatsApp Audio 2026-05-19 at 22.29.20.ogg" type="audio/ogg">
+                        הדפדפן שלך אינו תומך בהשמעת קול.
+                    </audio>
+                </div>
+
+                <div class="audio-player">
+                    <svg class="audio-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                    <audio controls controlsList="nodownload">
+                        <source src="WhatsApp Audio 2026-05-19 at 22.39.19.ogg" type="audio/ogg">
+                        הדפדפן שלך אינו תומך בהשמעת קול.
+                    </audio>
+                </div>
+
+                <div class="audio-player">
+                    <svg class="audio-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                    <audio controls controlsList="nodownload">
+                        <source src="WhatsApp Audio 2026-05-19 at 22.40.09.ogg" type="audio/ogg">
+                        הדפדפן שלך אינו תומך בהשמעת קול.
+                    </audio>
+                </div>
+
+                <div class="audio-player">
+                    <svg class="audio-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                    <audio controls controlsList="nodownload">
+                        <source src="WhatsApp Audio 2026-05-19 at 22.42.49.ogg" type="audio/ogg">
+                        הדפדפן שלך אינו תומך בהשמעת קול.
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section" style="text-align: center; padding: 100px 5%;">
+        <div class="reveal-up">
             <h2 style="font-size: 3rem;">קורס פרונטלי ומעשי</h2>
             <p style="font-size: 1.4rem; max-width: 800px; margin: 0 auto 40px;">
                 3 מפגשים פרונטליים של כ־4 שעות כל מפגש, שבהם לומדים, עובדים ויוצרים יחד בפועל בצורה מקצועית ואישית.
@@ -327,7 +408,7 @@
                 דברי איתי ושרייני את המקום שלך
             </a>
         </div>
-    </div>
+    </section>
 
     <script>
         // Parallax עדין לבלונים
