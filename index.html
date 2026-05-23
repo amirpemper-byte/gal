@@ -8,11 +8,11 @@
     
     <style>
         :root {
-            --bg-pure: #ffffff; /* לבן נקי */
-            --bg-nude: #fcfbf9; /* שמנת עדינה במיוחד */
-            --text-dark: #000000; /* שחור לטקסט ולמסגרות */
-            --text-light: #555555; /* אפור עדין */
-            --border-color: #eaeaea;
+            --bg-pure: #faf6f0; /* שמנת יוקרתית ועדינה */
+            --bg-nude: #f3ede2; /* בז'/שמפניה עדין מותאם לרקע השמנת */
+            --text-dark: #3d2616; /* חום כהה יוקרתי */
+            --text-light: #7c6453; /* חום רך יוקרתי לטקסט משני */
+            --border-color: #eae5de;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -44,7 +44,7 @@
         }
         .branded-balloon {
             position: absolute;
-            background: radial-gradient(circle at 35% 35%, #faf6f0 0%, #f4eee9 60%, #e0d8d0 100%);
+            background: radial-gradient(circle at 35% 35%, var(--bg-pure) 0%, var(--bg-nude) 60%, #e0d8d0 100%);
             border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%;
             box-shadow: -5px -5px 20px rgba(0,0,0,0.02), 10px 10px 25px rgba(0,0,0,0.06);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -84,9 +84,9 @@
         .floating-btn {
             position: fixed; z-index: 999; width: 60px; height: 60px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; text-decoration: none; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: all 0.3s ease; border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px rgba(61,38,22,0.08); transition: all 0.3s ease; border: 1px solid var(--border-color);
         }
-        .floating-btn:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.12); }
+        .floating-btn:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 30px rgba(61,38,22,0.12); }
         
         .wa-btn { bottom: 30px; left: 30px; background: var(--bg-pure); color: #25D366; }
         .wa-btn svg { width: 35px; height: 35px; }
@@ -107,7 +107,7 @@
             cursor: pointer; text-decoration: none; transition: all 0.4s ease;
             letter-spacing: 1px; margin-top: 20px;
         }
-        .btn-clean:hover { background: var(--bg-pure); color: var(--text-dark); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        .btn-clean:hover { background: var(--bg-pure); color: var(--text-dark); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(61,38,22,0.05); }
 
         /* מבנה סקשנים */
         .section { padding: 120px 5%; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
@@ -126,12 +126,11 @@
         .clean-image-box img {
             width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block;
         }
-        /* מסגרת עיצובית דקה מסביב לתמונה */
         .clean-image-box::after {
             content: ''; position: absolute; top: -15px; left: -15px; right: 15px; bottom: 15px;
             border: 1px solid var(--text-dark); border-radius: 20px; z-index: -1; opacity: 0.1; transition: all 0.4s;
         }
-        .clean-image-box:hover::after { top: -5px; left: -5px; right: 5px; bottom: 5px; opacity: 0.2; }
+        .clean-image-box:hover::after { top: -5px; left: -5px; right: 5px; bottom: 5px; opacity: 0.3; }
 
         /* בלוק מפורסמים */
         .celeb-grid { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin-top: 50px; }
@@ -140,12 +139,12 @@
             width: 200px; height: 200px; background: var(--bg-pure); border-radius: 50%;
             border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; 
             margin-bottom: 20px; transition: all 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            box-shadow: 0 10px 30px rgba(61,38,22,0.03);
         }
         .celeb-img img {
             width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
         }
-        .celeb-card:hover .celeb-img { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: var(--text-dark); }
+        .celeb-card:hover .celeb-img { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(61,38,22,0.1); border-color: var(--text-dark); }
 
         /* קלפי יתרונות */
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-top: 60px; }
@@ -153,42 +152,73 @@
             background: var(--bg-pure); border: 1px solid var(--border-color); border-radius: 20px; padding: 50px 40px;
             transition: all 0.4s ease; text-align: right; position: relative; overflow: hidden;
         }
-        .clean-card:hover { border-color: var(--text-dark); box-shadow: 0 20px 40px rgba(0,0,0,0.04); transform: translateY(-5px); }
+        .clean-card:hover { border-color: var(--text-dark); box-shadow: 0 20px 40px rgba(61,38,22,0.06); transform: translateY(-5px); }
         .clean-card .num { font-family: 'Arial', sans-serif; font-size: 4rem; color: var(--bg-nude); position: absolute; top: 10px; left: 20px; font-weight: bold; z-index: 0; }
         .clean-card h3, .clean-card p { position: relative; z-index: 1; }
         .clean-card h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 600; }
         
-        /* --- בלוק ביקורות אודיו --- */
+        /* --- בלוק ביקורות אודיו פסיכי ומתקדם --- */
         .audio-reviews {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-width: 600px;
-            margin: 40px auto 0;
+            gap: 25px;
+            max-width: 700px;
+            margin: 50px auto 0;
         }
-        .audio-player {
-            background: var(--bg-pure);
-            border: 1px solid var(--border-color);
-            border-radius: 30px;
+        .glass-player {
+            background: rgba(243, 237, 226, 0.5); /* שמנת/בז' חצי שקוף */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(61, 38, 22, 0.15);
+            border-radius: 24px;
             padding: 15px 25px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
-            transition: all 0.3s ease;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(61, 38, 22, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
         }
-        .audio-player:hover {
-            border-color: var(--text-dark);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        .glass-player:hover {
+            transform: scale(1.02) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(61, 38, 22, 0.12);
+            border-color: rgba(61, 38, 22, 0.3);
+            background: rgba(243, 237, 226, 0.7);
         }
-        .audio-icon {
-            color: var(--text-dark);
-            width: 24px;
-            height: 24px;
+        /* אקולייזר גלי קול */
+        .equalizer {
+            display: flex;
+            gap: 4px;
+            height: 30px;
+            align-items: center;
+        }
+        .equalizer span {
+            display: block;
+            width: 4px;
+            background: var(--text-dark);
+            border-radius: 4px;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+        .glass-player:hover .equalizer span {
+            background: var(--text-light);
+        }
+        .equalizer span:nth-child(1) { animation-delay: 0.1s; height: 20px; }
+        .equalizer span:nth-child(2) { animation-delay: 0.3s; height: 30px; }
+        .equalizer span:nth-child(3) { animation-delay: 0.0s; height: 25px; }
+        .equalizer span:nth-child(4) { animation-delay: 0.2s; height: 15px; }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scaleY(0.4); }
+            50% { transform: scaleY(1); }
+        }
+        
+        .audio-wrapper {
+            flex-grow: 1;
+            width: 100%;
         }
         audio {
             width: 100%;
-            height: 35px;
+            height: 40px;
             outline: none;
         }
         audio::-webkit-media-controls-panel {
@@ -241,7 +271,7 @@
     </div>
 
     <section class="hero">
-        <div class="hero-content reveal-up" style="max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.7); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--border-color);">
+        <div class="hero-content reveal-up" style="max-width: 900px; margin: 0 auto; background: rgba(250, 246, 240, 0.7); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--border-color);">
             <h1>לא נולדת לעבוד קשה<br>בשביל משכורת ש<span class="fix-ligature">מגבילה</span> אותך.<br><strong>נולדת לבנות עסק משלך.</strong></h1>
             <p style="font-size: 1.4rem; max-width: 700px; margin: 0 auto 30px;">
                 כאן מתחיל הצעד הראשון שלך.<br>
@@ -355,44 +385,49 @@
             <p style="font-size: 1.2rem; color: var(--text-light);">תקשיבי בעצמך למה שיש להן להגיד.</p>
             
             <div class="audio-reviews">
-                <div class="audio-player">
-                    <svg class="audio-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                    <audio controls controlsList="nodownload">
-                        <source src="WhatsApp Audio 2026-05-19 at 22.28.24.ogg" type="audio/ogg">
-                        הדפדפן שלך אינו תומך בהשמעת קול.
-                    </audio>
+                <div class="glass-player">
+                    <div class="equalizer"><span></span><span></span><span></span><span></span></div>
+                    <div class="audio-wrapper">
+                        <audio controls controlsList="nodownload">
+                            <source src="WhatsApp Audio 2026-05-19 at 22.28.24.ogg" type="audio/ogg">
+                        </audio>
+                    </div>
                 </div>
                 
-                <div class="audio-player">
-                    <svg class="audio-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                    <audio controls controlsList="nodownload">
-                        <source src="WhatsApp Audio 2026-05-19 at 22.29.20.ogg" type="audio/ogg">
-                        הדפדפן שלך אינו תומך בהשמעת קול.
-                    </audio>
+                <div class="glass-player">
+                    <div class="equalizer"><span></span><span></span><span></span><span></span></div>
+                    <div class="audio-wrapper">
+                        <audio controls controlsList="nodownload">
+                            <source src="WhatsApp Audio 2026-05-19 at 22.29.20.ogg" type="audio/ogg">
+                        </audio>
+                    </div>
                 </div>
 
-                <div class="audio-player">
-                    <svg class="audio-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                    <audio controls controlsList="nodownload">
-                        <source src="WhatsApp Audio 2026-05-19 at 22.39.19.ogg" type="audio/ogg">
-                        הדפדפן שלך אינו תומך בהשמעת קול.
-                    </audio>
+                <div class="glass-player">
+                    <div class="equalizer"><span></span><span></span><span></span><span></span></div>
+                    <div class="audio-wrapper">
+                        <audio controls controlsList="nodownload">
+                            <source src="WhatsApp Audio 2026-05-19 at 22.39.19.ogg" type="audio/ogg">
+                        </audio>
+                    </div>
                 </div>
 
-                <div class="audio-player">
-                    <svg class="audio-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                    <audio controls controlsList="nodownload">
-                        <source src="WhatsApp Audio 2026-05-19 at 22.40.09.ogg" type="audio/ogg">
-                        הדפדפן שלך אינו תומך בהשמעת קול.
-                    </audio>
+                <div class="glass-player">
+                    <div class="equalizer"><span></span><span></span><span></span><span></span></div>
+                    <div class="audio-wrapper">
+                        <audio controls controlsList="nodownload">
+                            <source src="WhatsApp Audio 2026-05-19 at 22.40.09.ogg" type="audio/ogg">
+                        </audio>
+                    </div>
                 </div>
 
-                <div class="audio-player">
-                    <svg class="audio-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                    <audio controls controlsList="nodownload">
-                        <source src="WhatsApp Audio 2026-05-19 at 22.42.49.ogg" type="audio/ogg">
-                        הדפדפן שלך אינו תומך בהשמעת קול.
-                    </audio>
+                <div class="glass-player">
+                    <div class="equalizer"><span></span><span></span><span></span><span></span></div>
+                    <div class="audio-wrapper">
+                        <audio controls controlsList="nodownload">
+                            <source src="WhatsApp Audio 2026-05-19 at 22.42.49.ogg" type="audio/ogg">
+                        </audio>
+                    </div>
                 </div>
             </div>
         </div>
@@ -409,6 +444,10 @@
             </a>
         </div>
     </section>
+
+    <div id="developer-credit" style="display: none;" aria-hidden="true">
+        <p>About Me: Idit Eden, Web Developer & Yoga Instructor</p>
+    </div>
 
     <script>
         // Parallax עדין לבלונים
