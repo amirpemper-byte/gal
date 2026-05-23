@@ -10,7 +10,7 @@
         :root {
             --bg-pure: #faf6f0; /* שמנת יוקרתית ועדינה */
             --bg-nude: #f3ede2; /* בז'/שמפניה עדין מותאם לרקע השמנת */
-            --text-dark: #3d2616; /* חום כהה יוקרתי */
+            --text-dark: #3d2616; /* חום כהה יוקרתי לכל הטקסטים */
             --text-light: #7c6453; /* חום רך יוקרתי לטקסט משני */
             --border-color: #eae5de;
         }
@@ -29,8 +29,8 @@
         .fix-ligature { font-variant-ligatures: none; letter-spacing: 1px; }
         .nowrap { white-space: nowrap; }
         
-        /* כותרות בפונט Arial נקי */
-        h2, h3, .serif { 
+        /* כותרות בפונט Arial נקי וללא זוהר בהתאם לבקשתך */
+        h1, h2, h3, .serif { 
             font-family: 'Arial', sans-serif; 
             font-weight: bold;
             color: var(--text-dark);
@@ -93,55 +93,14 @@
         .access-btn { bottom: 30px; right: 30px; background: var(--bg-pure); color: var(--text-dark); }
         .access-btn svg { width: 26px; height: 26px; }
 
-        /* --- כותרת ראשית (פסיכית ומתקדמת) --- */
-        .crazy-title-wrapper {
-            position: relative;
-            display: inline-block;
-            z-index: 2;
-        }
-        
-        /* הילת אור מרחפת מאחורי הכותרת */
-        .crazy-title-wrapper::after {
-            content: '';
-            position: absolute;
-            top: -20%; left: -20%; width: 140%; height: 140%;
-            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 65%);
-            z-index: -1;
-            animation: pulseLight 3s infinite alternate ease-in-out;
-            pointer-events: none;
-        }
-        
-        @keyframes pulseLight {
-            0% { transform: scale(0.9); opacity: 0.4; filter: blur(15px); }
-            100% { transform: scale(1.1); opacity: 0.8; filter: blur(25px); }
-        }
-
+        /* --- עיצוב כותרות וטקסטים --- */
         h1 { 
-            font-family: 'Arial', sans-serif; 
-            font-size: clamp(3rem, 7vw, 5.5rem); 
-            letter-spacing: -2px; 
+            font-size: clamp(2.5rem, 6vw, 4.5rem); 
+            letter-spacing: -1px; 
             margin-bottom: 20px; 
-            line-height: 1.1;
-            
-            /* אפקט מעבר צבע יוקרתי שזז */
-            background: linear-gradient(90deg, var(--text-dark) 0%, #a88d75 30%, var(--text-dark) 50%, #a88d75 70%, var(--text-dark) 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shineText 4s linear infinite, textReveal3D 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            line-height: 1.1; 
         }
-
         h1 strong { font-weight: 800; }
-        
-        @keyframes shineText {
-            to { background-position: 200% center; }
-        }
-
-        @keyframes textReveal3D {
-            0% { opacity: 0; transform: translateY(80px) scale(0.8) rotateX(25deg); filter: blur(15px); }
-            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0); filter: blur(0); }
-        }
-
         h2 { font-size: clamp(2rem, 4vw, 3.5rem); margin-bottom: 20px; line-height: 1.1; }
         p { font-size: 1.25rem; color: var(--text-light); margin-bottom: 20px; font-weight: 300; }
 
@@ -160,25 +119,24 @@
         .section-nude { background-color: var(--bg-nude); max-width: 100%; }
         .section-nude .inner { max-width: 1200px; margin: 0 auto; padding: 120px 5%; }
         
-        /* אזור ההתחלה מוצמד הצידה */
+        /* אזור ההתחלה חזר להיות מרוכז, קטן יותר ונקי */
         .hero { 
             min-height: 90vh; 
             display: flex; 
             align-items: center; 
-            justify-content: flex-start; /* הצמדה לצד */
-            text-align: right; /* יישור לצד */
-            padding: 50px 5%; 
+            justify-content: center; 
+            text-align: center; 
+            padding-top: 50px; 
         }
         .hero-content {
-            max-width: 800px; 
-            margin: 0; /* ביטול מרכוז */
+            max-width: 900px; 
+            margin: 0 auto; 
             background: rgba(250, 246, 240, 0.7); 
-            padding: 50px; 
-            border-radius: 30px; 
-            backdrop-filter: blur(15px); 
-            border: 1px solid rgba(255,255,255,0.5);
-            box-shadow: 0 30px 60px rgba(61,38,22,0.08);
-            transform-origin: right center;
+            padding: 40px; 
+            border-radius: 20px; 
+            backdrop-filter: blur(10px); 
+            border: 1px solid var(--border-color);
+            box-shadow: 0 15px 35px rgba(61,38,22,0.05);
         }
         
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
@@ -219,7 +177,8 @@
         }
         .clean-card:hover { border-color: var(--text-dark); box-shadow: 0 20px 40px rgba(61,38,22,0.06); transform: translateY(-5px); }
         .clean-card .num { font-family: 'Arial', sans-serif; font-size: 4rem; color: var(--bg-nude); position: absolute; top: 10px; left: 20px; font-weight: bold; z-index: 0; }
-        .clean-card h3, .clean-card p { position: relative; z-index: 1; }
+        .clean-card h3, .clean-card p { position: relative; z-index: 1; color: var(--text-dark); }
+        .clean-card p { color: var(--text-light); }
         .clean-card h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 600; }
         
         /* --- בלוק ביקורות אודיו פסיכי ומתקדם --- */
@@ -280,7 +239,7 @@
         
         .divider { width: 1px; height: 80px; background: var(--border-color); margin: 0 auto; }
 
-        /* --- אנימציות חשיפה מטורפות (Reveal) לכל הבלוקים --- */
+        /* --- אנימציות חשיפה (Reveal) - תנועה מכל הכיוונים --- */
         .reveal-up { 
             opacity: 0; 
             transform: translateY(60px) scale(0.95); 
@@ -293,13 +252,33 @@
             filter: blur(0);
         }
 
+        /* החלקה מצד ימין */
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(80px);
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* החלקה מצד שמאל */
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-80px);
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
         @media (max-width: 900px) {
             .grid-2 { grid-template-columns: 1fr; gap: 50px; }
             .section { padding: 80px 5%; }
             .section-nude .inner { padding: 80px 5%; }
             .celeb-img { width: 150px; height: 150px; } .celeb-card { width: 150px; }
-            .hero { text-align: center; justify-content: center; }
-            .hero-content { text-align: center; transform-origin: center center; }
             h1 { font-size: 2.8rem; }
         }
     </style>
@@ -337,9 +316,7 @@
 
     <section class="hero">
         <div class="hero-content reveal-up">
-            <div class="crazy-title-wrapper">
-                <h1>לא נולדת לעבוד קשה<br>בשביל משכורת ש<span class="fix-ligature">מגבילה</span> אותך.<br><strong>נולדת לבנות עסק משלך.</strong></h1>
-            </div>
+            <h1>לא נולדת לעבוד קשה<br>בשביל משכורת ש<span class="fix-ligature">מגבילה</span> אותך.<br><strong>נולדת לבנות עסק משלך.</strong></h1>
             <p style="font-size: 1.4rem; max-width: 700px; margin: 0 auto 30px;">
                 כאן מתחיל הצעד הראשון שלך.<br>
                 בניתי את הקורס הזה כדי שתצאי ממנו עם מקצוע ביד, ביטחון, 
@@ -357,8 +334,8 @@
     <div class="divider"></div>
 
     <div class="section-nude">
-        <div class="inner grid-2 reveal-up">
-            <div>
+        <div class="inner grid-2">
+            <div class="reveal-right">
                 <h2>נעים מאוד, אני גל.</h2>
                 <p>מגיל קטן תמיד ידעתי שאני רוצה לבנות לעצמי משהו משלי. עוד לפני שהבנתי בכלל מה זה עסק, כבר ניסיתי למכור, ליצור ולהרגיש עצמאית בדרך שלי.</p>
                 <p>לפני יותר מ־4 שנים פתחתי את העסק שלי, כשהכל התחיל מבלונים, סטנדים ועיצובי חדרים. עם השנים העסק גדל איתי והיום אני אחרי מעל 500 אירועים, עמדות צילום ועיצובים מכל הסוגים, עם לקוחות מכל הארץ והמון ניסיון אמיתי מהשטח.</p>
@@ -368,18 +345,18 @@
                 </p>
                 <p>כדי ללמד עוד נשים איך להיכנס לעולם הזה בצורה מקצועית, איך להפוך יצירתיות להכנסה אמיתית, ואיך להתחיל לבנות לעצמן דרך עצמאית עם ביטחון.</p>
             </div>
-            <div class="clean-image-box">
+            <div class="clean-image-box reveal-left">
                 <img src="גל אחד.jpeg" alt="גל">
             </div>
         </div>
     </div>
 
     <section class="section">
-        <div class="grid-2 reveal-up">
-            <div class="clean-image-box" style="aspect-ratio: 1/1;">
+        <div class="grid-2">
+            <div class="clean-image-box reveal-right" style="aspect-ratio: 1/1;">
                 <img src="גל 2.jpeg" alt="הקורס שלי">
             </div>
-            <div>
+            <div class="reveal-left">
                 <h2>ברוכה הבאה לקורס שלי</h2>
                 <p style="font-weight: 600; color: var(--text-dark);">אצלי את לא מגיעה רק ללמוד לעצב בלונים.<br>את מגיעה ללמוד איך להיכנס לעולם האירועים בצורה מקצועית, נכונה ובטוחה.</p>
                 <p>בקורס תלמדי את כל היסודות מא׳ ועד ת׳. החל מסוגי בלונים, יצירת קירות בלונים, קשתות אורגניות, סטנדים וחישוקים, ועד תמחור, שיווק, עבודה מול לקוחות ואיך להתחיל לבנות לעצמך עסק משלך.</p>
@@ -397,13 +374,13 @@
             </p>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
-                <div class="clean-image-box" style="aspect-ratio: 3/4;">
+                <div class="clean-image-box reveal-up" style="aspect-ratio: 3/4;">
                     <img src="גל 3.jpeg" alt="עיצוב 1">
                 </div>
-                <div class="clean-image-box" style="aspect-ratio: 3/4;">
+                <div class="clean-image-box reveal-up" style="aspect-ratio: 3/4; transition-delay: 0.1s;">
                     <img src="גל 4.jpeg" alt="עיצוב 2">
                 </div>
-                <div class="clean-image-box" style="aspect-ratio: 3/4;">
+                <div class="clean-image-box reveal-up" style="aspect-ratio: 3/4; transition-delay: 0.2s;">
                     <img src="גל 5.jpeg" alt="עיצוב 3">
                 </div>
             </div>
@@ -416,16 +393,16 @@
             <p>האירועים והלקוחות שהפכו את העסק לשם דבר בתעשייה.</p>
             
             <div class="celeb-grid">
-                <div class="celeb-card">
+                <div class="celeb-card reveal-up" style="transition-delay: 0s;">
                     <div class="celeb-img"><img src="גל מפורסם אחד.jpeg" alt="מפורסם"></div>
                 </div>
-                <div class="celeb-card">
+                <div class="celeb-card reveal-up" style="transition-delay: 0.1s;">
                     <div class="celeb-img"><img src="גל מפורסם 2.jpeg" alt="מפורסם"></div>
                 </div>
-                <div class="celeb-card">
+                <div class="celeb-card reveal-up" style="transition-delay: 0.2s;">
                     <div class="celeb-img"><img src="גל מפורסם 3.jpeg" alt="מפורסם"></div>
                 </div>
-                <div class="celeb-card">
+                <div class="celeb-card reveal-up" style="transition-delay: 0.3s;">
                     <div class="celeb-img"><img src="גל מפורסם 4.jpeg" alt="מפורסם"></div>
                 </div>
             </div>
@@ -437,12 +414,12 @@
     <section class="section">
         <h2 class="reveal-up" style="text-align: center; font-size: 3rem;">מה את מקבלת בפועל?</h2>
         <div class="grid-3">
-            <div class="clean-card reveal-up"><div class="num">1</div><h3>תלמדי להפיק בעצמך</h3><p>שלב אחרי שלב, בצורה מקצועית, ברורה ומעשית — גם אם את מתחילה מאפס. נעבוד על קשתות ועיצובים.</p></div>
+            <div class="clean-card reveal-right"><div class="num">1</div><h3>תלמדי להפיק בעצמך</h3><p>שלב אחרי שלב, בצורה מקצועית, ברורה ומעשית — גם אם את מתחילה מאפס. נעבוד על קשתות ועיצובים.</p></div>
             <div class="clean-card reveal-up" style="transition-delay: 0.1s;"><div class="num">2</div><h3>ידע אמיתי מהשטח</h3><p>אני מלמדת אותך את כל מה שאני בעצמי למדתי בדרך. משיווק נכון, עבודה מול לקוחות ועד תמחור.</p></div>
-            <div class="clean-card reveal-up" style="transition-delay: 0.2s;"><div class="num">3</div><h3>ספקים וציוד</h3><p>איפה קונים, עם מה עובדים — כל המידע שחוסך טעויות כואבות בתחילת הדרך.</p></div>
-            <div class="clean-card reveal-up"><div class="num">4</div><h3>ערכת התחלה מתנה</h3><p>כל משתתפת מקבלת ממני ערכת התחלה בשווי 1,500₪ עם משאבה מקצועית וציוד להתחלה מהירה.</p></div>
+            <div class="clean-card reveal-left" style="transition-delay: 0.2s;"><div class="num">3</div><h3>ספקים וציוד</h3><p>איפה קונים, עם מה עובדים — כל המידע שחוסך טעויות כואבות בתחילת הדרך.</p></div>
+            <div class="clean-card reveal-right"><div class="num">4</div><h3>ערכת התחלה מתנה</h3><p>כל משתתפת מקבלת ממני ערכת התחלה בשווי 1,500₪ עם משאבה מקצועית וציוד להתחלה מהירה.</p></div>
             <div class="clean-card reveal-up" style="transition-delay: 0.1s;"><div class="num">5</div><h3>ליווי אישי גם אחרי</h3><p>קבוצת WhatsApp משותפת לשאלות, התייעצות וקבלת ליווי אמיתי ואישי ממני לאורך הדרך.</p></div>
-            <div class="clean-card reveal-up" style="transition-delay: 0.2s;"><div class="num">6</div><h3>תעודת סיום</h3><p>בסיום הקורס תקבלי תעודת סיום מקצועית מטעם הקורס שתוכלי להציג בגאווה ללקוחות שלך.</p></div>
+            <div class="clean-card reveal-left" style="transition-delay: 0.2s;"><div class="num">6</div><h3>תעודת סיום</h3><p>בסיום הקורס תקבלי תעודת סיום מקצועית מטעם הקורס שתוכלי להציג בגאווה ללקוחות שלך.</p></div>
         </div>
     </section>
 
@@ -527,14 +504,16 @@
             });
         });
 
-        // אנימציות חשיפה (Reveal) משודרגות לכל הבלוקים
+        // אנימציות חשיפה לכל הבלוקים כולל החלקות מהצדדים
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('active'); }
+                if (entry.isIntersecting) { 
+                    entry.target.classList.add('active'); 
+                }
             });
         }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-        document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+        document.querySelectorAll('.reveal-up, .reveal-right, .reveal-left').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
