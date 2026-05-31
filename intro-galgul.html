@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>גלגול אירועים — Intro</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;600;800&display=swap" rel="stylesheet">
+
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ===== תוכן האתר עצמו (מתחת לאינטרו) ===== */
+    body { font-family: 'Heebo', sans-serif; background: #faf6f0; color: #3d2616; }
+    .site-content {
+        min-height: 100vh; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; text-align: center; gap: 16px;
+    }
+    .site-content h1 { font-size: clamp(2rem, 6vw, 4rem); }
+
+    /* ============================================================ */
+    /* =====            🎬 מסך כניסה (Intro Overlay)          ===== */
+    /* ============================================================ */
+    #intro-overlay {
+        position: fixed; inset: 0; z-index: 99999;
+        background: #ffffff;
+        display: flex; align-items: center; justify-content: center;
+        overflow: hidden;
+        /* will-change עוזר ל-GPU להחליק את ה-fade החוצה */
+        will-change: opacity;
+    }
+    /* כשנכבה את האינטרו נחזיר גלילה רגילה לגוף */
+    body.intro-active { overflow: hidden; height: 100vh; }
+
+    /* קנבס הכוכבים/חלקיקים — ממלא את כל המסך */
+    #particle-canvas {
+        position: absolute; inset: 0;
+        width: 100%; height: 100%;
+        display: block;
+    }
+
+    /* הבזק האנרגיה (Flash) — שכבה לבנה זוהרת מעל הכל */
+    #intro-flash {
+        position: absolute; inset: 0; z-index: 5;
+        background: radial-gradient(circle at 50% 50%,
+            #ffffff 0%, #fffdf5 40%, rgba(255,255,255,0) 75%);
+        opacity: 0;                 /* GSAP שולט על זה */
+        pointer-events: none;
+        mix-blend-mode: screen;
+    }
+
+    /* הלוגו המרכזי */
+    #intro-logo {
+        position: relative; z-index: 10;
+        text-align: center;
+        opacity: 0;                 /* GSAP שולט על זה */
+        will-change: transform, filter, opacity;
+    }
+    /* הבזק אור על הלוגו — בלום זוהר חם מאחורי הטקסט (גוון אור חם כדי שייראה על רקע לבן) */
+    #intro-logo .logo-flash {
+        position: absolute; top: 50%; left: 50%;
+        width: 160%; height: 420%;
+        transform: translate(-50%, -50%) scale(0.3);
+        background: radial-gradient(ellipse at 50% 50%,
+            rgba(255,214,140,0.95) 0%, rgba(255,190,120,0.55) 28%, rgba(255,170,90,0) 68%);
+        opacity: 0;                 /* GSAP שולט על זה */
+        pointer-events: none;
+        z-index: -1;                /* מאחורי הטקסט */
+        mix-blend-mode: multiply;   /* כך הזוהר החם נראה גם על רקע לבן */
+    }
+    #intro-logo .logo-main {
+        font-family: 'Heebo', sans-serif; font-weight: 800;
+        font-size: clamp(2.6rem, 9vw, 6rem);
+        letter-spacing: 2px;
+        color: #2a2118;
+        line-height: 1;
+    }
+    #intro-logo .logo-sub {
+        font-family: 'Heebo', sans-serif; font-weight: 300;
+        font-size: clamp(0.9rem, 3vw, 1.4rem);
+        letter-spacing: clamp(6px, 2vw, 14px);
+        color: #b5945b;             /* זהב רך */
+        margin-top: 14px;
+    }
+    /* קו זהב עדין שמופיע מתחת ללוגו */
+    #intro-logo .logo-line {
+        height: 1px; width: 0;      /* GSAP ימתח אותו */
+        margin: 22px auto 0;
+        background: linear-gradient(90deg, transparent, #b5945b, transparent);
+    }
+
+    /* כיבוד העדפת תנועה מופחתת — קופצים ישר לאתר */
+    @media (prefers-reduced-motion: reduce) {
+        #intro-overlay { display: none; }
+        body.intro-active { overflow: auto; height: auto; }
+    }
+</style>
+</head>
+<body class="intro-active">
+
+    <!-- ============================================================ -->
+    <!-- =====                  מסך הכניסה                     ===== -->
+    <!-- ============================================================ -->
+    <div id="intro-overlay">
+        <canvas id="particle-canvas"></canvas>
+        <div id="intro-flash"></div>
+
+        <div id="intro-logo">
+            <div class="logo-flash"></div>
+            <div class="logo-main">גלגול אירועים</div>
+            <div class="logo-sub">GALGUL&nbsp;EVENTS</div>
+            <div class="logo-line"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- =====           התוכן האמיתי של האתר כאן              ===== -->
+    <!-- ============================================================ -->
+    <main class="site-content">
+        <h1>ברוכים הבאים לאתר 🎈</h1>
+        <p>כאן מתחיל התוכן האמיתי שלך, מתחת לאינטרו.</p>
+    </main>
+
+
+    <!-- ===== GSAP מ-CDN ===== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <script>
+    (function () {
+        "use strict";
+
+        // אם המשתמש ביקש תנועה מופחתת — לא מריצים שום אנימציה
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.body.classList.remove('intro-active');
+            return;
+        }
+
+        /* ====================================================== */
+        /* 1. מנוע החלקיקים (Canvas)                              */
+        /* ====================================================== */
+        const canvas = document.getElementById('particle-canvas');
+        const ctx    = canvas.getContext('2d');
+
+        let W, H, cx, cy;
+        // גווני כוכב ריאליסטיים — כסף וכחול-לבן קריר (נראים על רקע לבן, בלי זהב)
+        const PALETTE = ['#8f9bb3', '#aab4c8', '#9aa7c2', '#b6bccb'];
+        const PARTICLE_COUNT = 140;
+        let particles = [];
+
+        // ערכים שה-GSAP Timeline ישלוט עליהם בזמן אמת:
+        const fx = {
+            scatter: 0,   // 0 = במקום, 1 = מפוזר לגמרי החוצה
+            drift:   1    // עוצמת התנועה האמביינטית הרכה
+        };
+
+        function resize() {
+            const dpr = window.devicePixelRatio || 1;
+            W = canvas.clientWidth;
+            H = canvas.clientHeight;
+            cx = W / 2;
+            cy = H / 2;
+            canvas.width  = W * dpr;
+            canvas.height = H * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function createParticles() {
+            particles = [];
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                // כ-22% מהחלקיקים יהיו "כוכבים זוהרים" גדולים יותר עם קרני אור
+                const isStar = Math.random() < 0.22;
+                const driftAngle = Math.random() * Math.PI * 2;
+                const driftSpeed = Math.random() * 0.18 + 0.04; // פיקסלים לפריים — נדידה איטית
+
+                particles.push({
+                    baseX: Math.random() * W,
+                    baseY: Math.random() * H,
+                    isStar,
+                    radius: isStar ? (Math.random() * 1.8 + 1.6) : (Math.random() * 1.6 + 0.5),
+                    color: PALETTE[(Math.random() * PALETTE.length) | 0],
+                    // וקטור פיזור (לאיזה כיוון החלקיק "נורה" החוצה)
+                    vx: Math.cos(angle),
+                    vy: Math.sin(angle),
+                    // נדידה רציפה איטית על פני המסך
+                    dx: Math.cos(driftAngle) * driftSpeed,
+                    dy: Math.sin(driftAngle) * driftSpeed,
+                    // פרמטרים לתנועה אמביינטית עדינה (ריחוף סינוסי)
+                    phase: Math.random() * Math.PI * 2,
+                    floatAmp: Math.random() * 12 + 4,
+                    floatSpeed: Math.random() * 0.0008 + 0.0003,
+                    // נצנוץ — לכוכבים יותר חד ובולט
+                    twinkle: Math.random() * Math.PI * 2,
+                    twinkleSpeed: (Math.random() * 0.003 + 0.0015) * (isStar ? 1.6 : 1),
+                    spikeAngle: Math.random() * Math.PI    // סיבוב קרני האור של הכוכב
+                });
+            }
+        }
+
+        // נקודת אור רכה ומעורפלת בקצוות — נראית כמו כוכב אמיתי שמנצנץ, לא כמו אייקון.
+        // (על רקע לבן זו הצורה הכי טבעית: נקודה רכה עם דהייה הדרגתית, לא עיגול חד)
+        function softPoint(x, y, r, color, alpha) {
+            const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
+            grad.addColorStop(0,   color);
+            grad.addColorStop(0.5, color);
+            grad.addColorStop(1,   'rgba(255,255,255,0)'); // דהייה לשקוף — קצוות רכים
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawStar(x, y, r, color, brightness, spin) {
+            if (brightness <= 0.02) return;
+
+            // הילה רכה ורחבה מסביב — נותנת תחושת אור עמום (לא כתם חד)
+            softPoint(x, y, r * 4.5, color, brightness * 0.18);
+            // ליבת האור הרכה — הנקודה עצמה
+            softPoint(x, y, r * 1.6, color, brightness * 0.9);
+
+            // רק כשהכוכב בשיא הבהירות מופיע רמז עדין מאוד של קרני אור —
+            // דק, קצר ושקוף, כך שזה לא נראה "מצוייר" אלא נצנוץ טבעי
+            if (brightness > 0.78) {
+                const t = (brightness - 0.78) / 0.22;      // 0..1 רק בשיא
+                const len = r * (2 + t * 3);
+                const grad = ctx.createLinearGradient(x - len, y, x + len, y);
+                grad.addColorStop(0, 'rgba(255,255,255,0)');
+                grad.addColorStop(0.5, color);
+                grad.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.globalAlpha = t * 0.35;
+                ctx.lineCap = 'round';
+                ctx.lineWidth = 0.6;
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(x - len, y); ctx.lineTo(x + len, y); // קרן אופקית
+                ctx.moveTo(x, y - len); ctx.lineTo(x, y + len); // קרן אנכית
+                ctx.stroke();
+            }
+        }
+
+        function render(time) {
+            ctx.clearRect(0, 0, W, H);
+
+            const scatterPx = fx.scatter * (Math.max(W, H) * 0.9); // מרחק הפיזור המקסימלי
+            const M = 40; // שוליים לעטיפה (wrap) חלקה סביב המסך
+
+            for (const p of particles) {
+                // נדידה רציפה איטית — מזיזים את נקודת הבסיס ועוטפים בקצוות
+                p.baseX += p.dx * fx.drift;
+                p.baseY += p.dy * fx.drift;
+                if (p.baseX < -M) p.baseX = W + M; else if (p.baseX > W + M) p.baseX = -M;
+                if (p.baseY < -M) p.baseY = H + M; else if (p.baseY > H + M) p.baseY = -M;
+
+                // תנועה אמביינטית רכה (ריחוף סינוסי מעל הנדידה)
+                const floatX = Math.sin(time * p.floatSpeed + p.phase) * p.floatAmp * fx.drift;
+                const floatY = Math.cos(time * p.floatSpeed + p.phase) * p.floatAmp * fx.drift;
+
+                // פיזור החוצה בעת ה-Flash
+                const x = p.baseX + floatX + p.vx * scatterPx;
+                const y = p.baseY + floatY + p.vy * scatterPx;
+
+                // נצנוץ + דהייה ככל שמתפזרים
+                const tw = 0.5 + Math.sin(time * p.twinkleSpeed + p.twinkle) * 0.45;
+                const brightness = Math.max(0, tw * (1 - fx.scatter * 0.85));
+
+                if (p.isStar) {
+                    // כוכב — נקודת אור רכה שמנצנצת
+                    const spin = p.spikeAngle + time * 0.00008;
+                    drawStar(x, y, p.radius, p.color, brightness, spin);
+                } else {
+                    // חלקיק רקע זעיר — גם הוא נקודת אור רכה (קצוות מעורפלים, לא עיגול חד)
+                    softPoint(x, y, p.radius * 2.4, p.color, brightness * 0.7);
+                }
+            }
+            ctx.globalAlpha = 1;
+            ctx.shadowBlur = 0;
+
+            rafId = requestAnimationFrame(render);
+        }
+
+        let rafId;
+        function startRenderLoop() {
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(render);
+        }
+
+        resize();
+        createParticles();
+        startRenderLoop();
+        window.addEventListener('resize', () => { resize(); createParticles(); });
+
+
+        /* ====================================================== */
+        /* 2. ה-GSAP Timeline הראשי                               */
+        /* ====================================================== */
+        const overlay = document.getElementById('intro-overlay');
+        const flash   = document.getElementById('intro-flash');
+        const logo    = document.getElementById('intro-logo');
+        const logoLine = logo.querySelector('.logo-line');
+        const logoFlash = logo.querySelector('.logo-flash');
+
+        // דגל שמסמן אם הדאטה מהשרת כבר מוכנה (ראה סעיף 3 למטה)
+        let dataReady = false;
+
+        const tl = gsap.timeline({
+            defaults: { ease: 'power3.out' },
+            onComplete: () => {
+                // ניקוי: מסירים את האינטרו מה-DOM ומשחררים גלילה
+                cancelAnimationFrame(rafId);
+                overlay.remove();
+                document.body.classList.remove('intro-active');
+            }
+        });
+
+        tl
+            // --- א. שהייה קצרה על מסך לבן עם כוכבים מרחפים ---
+            .to({}, { duration: 0.8 })
+
+            // --- ב. ה-FLASH: הבזק חד וחזק ---
+            .to(flash, { opacity: 1, duration: 0.12, ease: 'power4.in' })
+            .to(flash, { opacity: 0, duration: 0.55, ease: 'power2.out' })
+
+            // --- ג. החשיפה הדרמטית (קורית בו-זמנית עם דעיכת ה-Flash) ---
+            // החלקיקים מתפזרים בכוח החוצה
+            .to(fx, { scatter: 1, duration: 1.5, ease: 'power3.out' }, '<')
+            // הלוגו מופיע מטשטוש לחדות + זום-אין עדין
+            .fromTo(logo,
+                { opacity: 0, scale: 1.35, filter: 'blur(28px)' },
+                { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.3, ease: 'power3.out' },
+                '<')
+            // 💥 הבזק אור על הלוגו — פיצוץ מהיר מאחורי הטקסט בדיוק ברגע החשיפה
+            .fromTo(logoFlash,
+                { opacity: 0, scale: 0.3 },
+                { opacity: 1, scale: 1, duration: 0.15, ease: 'power3.in' },
+                '<0.05')
+            .to(logoFlash, { opacity: 0, scale: 1.4, duration: 0.7, ease: 'power2.out' })
+            // פעימת הגדלה קצרה של הטקסט עצמו ברגע הפלאש — נותנת "אימפקט"
+            .fromTo(logo.querySelector('.logo-main'),
+                { scale: 1 },
+                { scale: 1.08, duration: 0.15, ease: 'power2.out', yoyo: true, repeat: 1,
+                  transformOrigin: '50% 50%' },
+                '<')
+            // קו הזהב נמתח מתחת ללוגו
+            .to(logoLine, { width: '70%', duration: 1.0, ease: 'power2.out' }, '<0.2')
+
+            // === נקודת ה-HOLD על הלוגו ===
+            // כאן מוסיפים label כדי שנוכל לחזור אליו / לעצור עליו אם צריך
+            .addLabel('logoVisible')
+
+            // 👇👇 נקודת השליטה לטעינת דאטה מה-Cloud Code backend 👇👇
+            // אם הדאטה עוד לא הגיעה — עוצרים את האנימציה כאן על הלוגו.
+            // ברגע שה-Promise נפתר (סעיף 3), קוראים ל-tl.play() וזה ממשיך.
+            .call(() => {
+                if (!dataReady) {
+                    tl.pause();   // 🛑 מחזיק את האינטרו על הלוגו עד שהדאטה מוכנה
+                }
+            })
+
+            // --- ד. שהייה של ~2 שניות על הלוגו ---
+            .to({}, { duration: 2 })
+
+            // --- ה. יציאה: דעיכה חלקה של כל האינטרו ---
+            .to(overlay, { opacity: 0, duration: 1.0, ease: 'power2.inOut' });
+
+
+        /* ====================================================== */
+        /* 3. אינטגרציה עם ה-Cloud Code backend (Fetch)           */
+        /* ====================================================== */
+        //
+        // הדפוס: מתחילים את ה-fetch מיד עם טעינת הדף (במקביל לאנימציה).
+        // אם הדאטה חוזרת לפני שהאנימציה הגיעה ללוגו — דגל dataReady יהיה
+        // כבר true, וה-.call() למעלה כלל לא יעצור.
+        // אם הדאטה איטית — האנימציה תיעצר על הלוגו, וה-.then() כאן ישחרר אותה.
+
+        function loadBackendData() {
+            // 🔁 החליפי את ה-URL בכתובת ה-API האמיתית שלך
+            return fetch('https://your-cloud-code-backend.example/api/data')
+                .then(res => res.json());
+            // לבדיקה מקומית בלי שרת, אפשר לדמות עיכוב:
+            // return new Promise(resolve => setTimeout(resolve, 4000));
+        }
+
+        loadBackendData()
+            .then(data => {
+                // 👉 כאן אפשר להזריק את הדאטה לתוך האתר (window.appData = data וכו')
+                dataReady = true;
+                // ▶️ אם האנימציה נעצרה וממתינה — משחררים אותה להמשיך ליציאה
+                if (tl.paused()) {
+                    tl.play();
+                }
+            })
+            .catch(err => {
+                console.error('שגיאה בטעינת הדאטה:', err);
+                // גם במקרה כשל — לא משאירים את המשתמש תקוע על האינטרו
+                dataReady = true;
+                if (tl.paused()) tl.play();
+            });
+
+    })();
+    </script>
+</body>
+</html>
